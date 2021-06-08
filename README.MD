@@ -21,10 +21,10 @@ docker-compose up -d --build
 2. Se quiser você pode alterar as variaveis de ambiente no arquivo .env:
 
 ```
-UID=1001
-USER=www-data
-GID=1001
-GROUP=www-data
+UID=1000
+USER=admsilva
+GID=1000
+GROUP=admsilva
 
 NGINX_PORT=80
 MYSQL_PORT=3306
