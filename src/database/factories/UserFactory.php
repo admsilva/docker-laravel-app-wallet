@@ -1,0 +1,53 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+class UserFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition(): array
+    {
+        $type = $this->faker->randomElement(['shopkeeper', 'person']);
+        return [
+            'name' => ($type === 'shopkeeper') ? $this->faker->company : $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'cpf_cnpj' => ($type === 'shopkeeper') ?
+                clean_cpf_cnpj($this->faker->unique()->cnpj) :
+                clean_cpf_cnpj($this->faker->unique()->cpf),
+            'type' => $type,
+            'status' => 'active',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'remember_token' => Str::random(10),
+        ];
+    }
+
+    /**
+     * Indicate that the model's email address should be unverified.
+     *
+     * @return Factory
+     */
+    public function unverified(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
+        });
+    }
+}

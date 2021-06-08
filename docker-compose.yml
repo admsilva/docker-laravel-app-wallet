@@ -1,0 +1,124 @@
+version: '3'
+
+networks:
+  laravel:
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ${DOCKER_FILE_FOLDER}/nginx/Dockerfile
+      args:
+        USER: ${USER}
+        GROUP: ${GROUP}
+        CONFIG_FOLDER: ${CONFIG_FOLDER}
+    ports:
+      - ${NGINX_PORT}:80
+    restart: always
+    volumes:
+      - ${APP_FOLDER}:/var/www/html
+      - ./log:/var/log/nginx/
+    depends_on:
+      - php-fpm
+      - mysql
+    networks:
+      - laravel
+
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: .
+      dockerfile: ${DOCKER_FILE_FOLDER}/php/Dockerfile
+      args:
+        USER: ${USER}
+        GROUP: ${GROUP}
+        CONFIG_FOLDER: ${CONFIG_FOLDER}
+    expose:
+      - "9000"
+    restart: always
+    volumes:
+      - ${APP_FOLDER}:/var/www/html
+    networks:
+      - laravel
+
+  mysql:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: ${DOCKER_FILE_FOLDER}/mysql/Dockerfile
+      args:
+        USER: ${USER}
+        GROUP: ${GROUP}
+    ports:
+      - ${MYSQL_PORT}:3306
+    restart: always
+    volumes:
+      - ${DATABASE_FOLDER}:/var/lib/mysql
+    working_dir: /var/lib/mysql
+    user: ${USER}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      SERVICE_TAGS: ${SERVICE_TAGS}
+      SERVICE_NAME: ${SERVICE_NAME}
+    networks:
+      - laravel
+
+  composer:
+    container_name: composer
+    build:
+      context: .
+      dockerfile: ${DOCKER_FILE_FOLDER}/composer/Dockerfile
+      args:
+        UID: ${UID}
+        USER: ${USER}
+        GID: ${GID}
+        GROUP: ${GROUP}
+    volumes:
+      - ${APP_FOLDER}:/var/www/html
+    working_dir: /var/www/html
+    user: ${USER}
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    entrypoint: ['composer']
+    networks:
+      - laravel
+
+  artisan:
+    container_name: artisan
+    build:
+      context: .
+      dockerfile: ${DOCKER_FILE_FOLDER}/php/Dockerfile
+      args:
+        USER: ${USER}
+        GROUP: ${GROUP}
+        CONFIG_FOLDER: ${CONFIG_FOLDER}
+    volumes:
+      - ${APP_FOLDER}:/var/www/html
+    working_dir: /var/www/html
+    user: ${USER}
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    entrypoint: ['php', 'artisan']
+    networks:
+      - laravel
+
+  npm:
+    container_name: npm
+    image: node:14.17-alpine
+    volumes:
+      - ${APP_FOLDER}:/var/www/html
+    working_dir: /var/www/html
+    user: node
+    ports:
+      - ${NPM_PORT}:3000
+    entrypoint: ['npm']
+    networks:
+      - laravel
