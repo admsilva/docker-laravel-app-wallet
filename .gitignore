@@ -1,0 +1,7 @@
+.idea
+.vscode
+.env
+data/*
+!data/.gitkeep
+log/*
+!log/.gitkeep
