@@ -18,7 +18,7 @@ cp .env-example .env
 docker-compose up -d --build
 ```
 
-2. Se quiser você pode alterar as variaveis de ambiente:
+2. Se quiser você pode alterar as variaveis de ambiente no arquivo .env:
 
 ```
 UID=1001
@@ -47,37 +47,7 @@ SERVICE_NAME=mysql
 
 * Rodar composer install no projeto
 ```
-## COMANDOS
-
-* Rodar composer install no projeto
-```
 docker-compose run --rm composer install
-```
-
-* Rodar composer update no projeto
-```
-docker-compose run --rm composer update
-```
-
-* Para gerar as migrations
-```sh
-docker-compose run --rm artisan migrate
-```
-
-* Para gerar os seeds do banco de dados
-```sh
-docker-compose run --rm artisan db:seed
-```
-
-* Para fazer o reset do banco de dados
-```sh
-docker-compose run --rm artisan migrate:reset
-```
-
-* Para atualizar a documentação da API
-```sh
-docker-compose run --rm artisan l5-swagger:generate
-```
 ```
 
 * Rodar composer update no projeto
@@ -122,7 +92,7 @@ http://localhost
 http://localhost/api/v1/documentation
 ```
 
-#### MySQL
+### MySQL
 
 ```
 Host: locahost
@@ -131,7 +101,7 @@ User: homestead
 Password: secret
 ```
 
-## Estrutura de diretorios
+#### Estrutura de diretorios
 
 ```
 ./
@@ -181,7 +151,7 @@ Password: secret
 │  │  
 ```
 
-## DOCKER DICAS
+#### DOCKER DICAS
 
 * Parar todos os containers
 ```sh
