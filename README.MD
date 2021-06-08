@@ -56,6 +56,11 @@ docker-compose run --rm composer install
 docker-compose run --rm composer update
 ```
 
+* Gerar chave da aplicação
+```
+docker-compose run --rm artisan key:generate
+```
+
 * Para gerar as migrations
 ```sh
 docker-compose run --rm artisan migrate
