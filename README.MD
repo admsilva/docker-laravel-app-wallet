@@ -19,7 +19,7 @@ cp ./src/.env.example ./src/.env
 docker-compose up -d --build
 ```
 
-2. Se quiser você pode alterar as variaveis de ambiente no arquivo .env:
+2. Se quiser você pode alterar as variáveis de ambiente no arquivo .env:
 
 ```
 UID=1000
@@ -107,7 +107,7 @@ User: homestead
 Password: secret
 ```
 
-#### Estrutura de diretorios
+#### Estrutura de diretórios
 
 ```
 ./
@@ -171,7 +171,7 @@ docker rm $(docker ps -a -q)
 ```sh
 docker rmi $(docker images -q)
 ```
-* CLI de acesso ao contaner
+* CLI de acesso ao container
 ```sh
 docker-compose exec <name|id> /bin/bash
 ```
