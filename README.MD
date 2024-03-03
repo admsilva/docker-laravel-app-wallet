@@ -4,7 +4,7 @@
 
 - NGINX (latest)
 - MYSQL (latest)
-- PHP8.0-FPM (latest)
+- PHP8.3-FPM-ALPINE (latest)
 - COMPOSER (lastest)
 
 ## Instalação

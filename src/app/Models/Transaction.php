@@ -24,7 +24,7 @@ class Transaction extends Model
         'description',
         'type',
         'status',
-        'notify'
+        'notify',
     ];
 
     /**

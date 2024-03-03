@@ -14,10 +14,10 @@ class UserResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         $user_wallet = null;
 
@@ -37,7 +37,7 @@ class UserResource extends JsonResource
             'cpf_cnpj' => $this->cpf_cnpj,
             'type' => $this->type,
             'status' => $this->status,
-            'wallet' => $user_wallet
+            'wallet' => $user_wallet,
         ];
     }
 }
