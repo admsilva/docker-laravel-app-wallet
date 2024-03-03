@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\TransactionRequest;
 use App\Http\Resources\Api\V1\TransactionResource;
 use App\Services\TransactionService;
-use GuzzleHttp\Exception\GuzzleException;
 use Throwable;
 use Illuminate\Http\JsonResponse;
 

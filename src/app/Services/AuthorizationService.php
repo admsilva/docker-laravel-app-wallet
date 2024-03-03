@@ -39,9 +39,7 @@ class AuthorizationService
      */
     public function checkAuthorization(): string
     {
-        $client =  new Client([
-            'base_uri' => $this->baseUrlAuthorization,
-        ]);
+        $client =  new Client(['base_uri' => $this->baseUrlAuthorization]);
 
         $response = $client->request('GET', $this->uriAuthorization);
 

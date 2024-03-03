@@ -33,14 +33,14 @@ class UserRequest extends FormRequest
                 'email' => 'required|unique:users',
                 'cpf_cnpj' => 'required|unique:users',
                 'type' => 'required',
-                'password' => 'required'
+                'password' => 'required',
             ],
             'PUT', 'PATCH' => [
                 'name' => 'required',
                 'email' => 'required|unique:users,email,' . $this->email,
                 'cpf_cnpj' => 'required|unique:users,cpf_cnpj,' . $this->cpf_cnpj,
                 'type' => 'required',
-                'password' => 'required'
+                'password' => 'required',
             ],
             'GET', 'DELETE' => []
         };

@@ -14,10 +14,10 @@ class TransactionResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array
      */
-    public function toArray($request): array
+    public function toArray(Request $request): array
     {
         if ($this["deposits"] ||
             $this["withdraws"] ||
@@ -35,7 +35,7 @@ class TransactionResource extends JsonResource
                     'description' => $deposit->description,
                     'type' => $deposit->type,
                     'status' => $deposit->status,
-                    'notify' => $deposit->notify
+                    'notify' => $deposit->notify,
                 ];
             }
 
@@ -47,7 +47,7 @@ class TransactionResource extends JsonResource
                     'description' => $withdraw->description,
                     'type' => $withdraw->type,
                     'status' => $withdraw->status,
-                    'notify' => $withdraw->notify
+                    'notify' => $withdraw->notify,
                 ];
             }
 
@@ -60,14 +60,14 @@ class TransactionResource extends JsonResource
                     'description' => $transfer->description,
                     'type' => $transfer->type,
                     'status' => $transfer->status,
-                    'notify' => $transfer->notify
+                    'notify' => $transfer->notify,
                 ];
             }
 
             return [
                 'deposits' => $deposits,
                 'withdraws' => $withdraws,
-                'transfers' => $transfers
+                'transfers' => $transfers,
             ];
         }
 
@@ -79,7 +79,7 @@ class TransactionResource extends JsonResource
             'description' => $this->description,
             'type' => $this->type,
             'status' => $this->status,
-            'notify' => $this->notify
+            'notify' => $this->notify,
         ];
 
         if ($this->type !== 'transfer') {
@@ -90,7 +90,7 @@ class TransactionResource extends JsonResource
                 'description' => $this->description,
                 'type' => $this->type,
                 'status' => $this->status,
-                'notify' => $this->notify
+                'notify' => $this->notify,
             ];
         }
 
