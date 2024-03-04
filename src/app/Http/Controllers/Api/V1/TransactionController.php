@@ -18,93 +18,16 @@ use Illuminate\Http\JsonResponse;
 class TransactionController extends Controller
 {
     /**
-     * @var TransactionService
-     */
-    protected TransactionService $transactionService;
-
-    /**
      * TransactionController constructor.
      * @param TransactionService $transactionService
      */
-    public function __construct(TransactionService $transactionService)
+    public function __construct(protected TransactionService $transactionService)
     {
-        $this->transactionService = $transactionService;
     }
 
     /**
-     * @OA\Get(
-     *      path="/transactions/byWallet/{id}",
-     *      operationId="showTransactionsByWalletId",
-     *      tags={"Transactions"},
-     *      summary="Get list of transactions by wallet id",
-     *      description="Returns transactions by wallet id",
-     *      @OA\Parameter(
-     *          name="id",
-     *          in="path",
-     *          required=true,
-     *          description="wallet id",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              description="transactions by wallet id",
-     *              type="object",
-     *              @OA\Property(property="data", type="array",
-     *                  @OA\Items(
-     *                      @OA\Property(property="deposits", type="array",
-     *                          @OA\Items(
-     *                              @OA\Property(property="id", type="number"),
-     *                              @OA\Property(property="wallet_payer_id", type="number"),
-     *                              @OA\Property(property="amount", type="number"),
-     *                              @OA\Property(property="description", type="string"),
-     *                              @OA\Property(property="type", type="string"),
-     *                              @OA\Property(property="status", type="string"),
-     *                              @OA\Property(property="notify", type="string"),
-     *                          ),
-     *                      ),
-     *                      @OA\Property(property="withdraws", type="array",
-     *                          @OA\Items(
-     *                              @OA\Property(property="id", type="number"),
-     *                              @OA\Property(property="wallet_payer_id", type="number"),
-     *                              @OA\Property(property="amount", type="number"),
-     *                              @OA\Property(property="description", type="string"),
-     *                              @OA\Property(property="type", type="string"),
-     *                              @OA\Property(property="status", type="string"),
-     *                              @OA\Property(property="notify", type="string"),
-     *                          ),
-     *                      ),
-     *                      @OA\Property(property="transfers", type="array",
-     *                          @OA\Items(
-     *                              @OA\Property(property="id", type="number"),
-     *                              @OA\Property(property="wallet_payer_id", type="number"),
-     *                              @OA\Property(property="wallet_payee_id", type="number"),
-     *                              @OA\Property(property="amount", type="number"),
-     *                              @OA\Property(property="description", type="string"),
-     *                              @OA\Property(property="type", type="string"),
-     *                              @OA\Property(property="status", type="string"),
-     *                              @OA\Property(property="notify", type="string"),
-     *                          ),
-     *                      ),
-     *                  ),
-     *              ),
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=500,
-     *          description="Server Error",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *          )
-     *      )
-     *     )
-     *
-     *
      * @param int $id
-     * @return TransactionResource|JsonResponse
+     * @return JsonResponse|TransactionResource
      */
     public function showTransactionsByWalletId(int $id): JsonResponse|TransactionResource
     {
@@ -122,58 +45,8 @@ class TransactionController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *      path="/transactions/{id}",
-     *      operationId="getTransactionById",
-     *      tags={"Transactions"},
-     *      summary="List transaction by id",
-     *      description="Return data of transaction by id",
-     *      @OA\Parameter(
-     *          name="id",
-     *          in="path",
-     *          required=true,
-     *          description="transaction id",
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              description="data of transaction by id",
-     *              type="object",
-     *              @OA\Property(property="data", type="object",
-     *                  @OA\Property(property="id", type="number"),
-     *                  @OA\Property(property="wallet_payer_id", type="number"),
-     *                  @OA\Property(property="wallet_payee_id", type="number"),
-     *                  @OA\Property(property="amount", type="number"),
-     *                  @OA\Property(property="description", type="string"),
-     *                  @OA\Property(property="type", type="string"),
-     *                  @OA\Property(property="status", type="string"),
-     *                  @OA\Property(property="notify", type="string"),
-     *              ),
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=404,
-     *          description="Not found",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=500,
-     *          description="Server Erro",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *          )
-     *      )
-     *     )
-     *
-     *
      * @param int $id
-     * @return TransactionResource|JsonResponse
+     * @return JsonResponse|TransactionResource
      */
     public function show(int $id): JsonResponse|TransactionResource
     {
@@ -191,58 +64,6 @@ class TransactionController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *      path="/transactions",
-     *      operationId="storeTransactions",
-     *      tags={"Transactions"},
-     *      summary="Create transactions",
-     *      description="Return create new transaction",
-     *      @OA\RequestBody(
-     *          @OA\MediaType( mediaType="application/json",
-     *              @OA\Schema(
-     *                  @OA\Property(property="wallet_payer_id", type="number"),
-     *                  @OA\Property(property="wallet_payee_id", type="number"),
-     *                  @OA\Property(property="amount", type="number"),
-     *                  @OA\Property(property="description", type="string"),
-     *                  @OA\Property(property="type", type="string"),
-     *              )
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *          @OA\JsonContent(
-     *              description="data of new transaction",
-     *              type="object",
-     *              @OA\Property(property="data", type="object",
-     *                  @OA\Property(property="id", type="number"),
-     *                  @OA\Property(property="wallet_payer_id", type="number"),
-     *                  @OA\Property(property="wallet_payee_id", type="number"),
-     *                  @OA\Property(property="amount", type="number"),
-     *                  @OA\Property(property="description", type="string"),
-     *                  @OA\Property(property="type", type="string"),
-     *                  @OA\Property(property="status", type="string"),
-     *                  @OA\Property(property="notify", type="string"),
-     *              ),
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=409,
-     *          description="Conflict",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=500,
-     *          description="Server Erro",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *          )
-     *      )
-     *     )
-     *
-     *
      * @param TransactionRequest $request
      * @return TransactionResource|JsonResponse
      */

@@ -16,11 +16,11 @@ use App\Http\Controllers\Api\V1\TransactionController;
 |
 */
 
-Route::resource('wallets', WalletController::class)->except([
+Route::resource('users', UserController::class)->except([
     'create', 'edit'
 ]);
 
-Route::resource('users', UserController::class)->except([
+Route::resource('wallets', WalletController::class)->except([
     'create', 'edit'
 ]);
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +23,15 @@ class Wallet extends Model
         'user_id',
         'balance',
         'status',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $casts = [
+        'balance' => 'integer',
+        'status' => StatusWallet::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**

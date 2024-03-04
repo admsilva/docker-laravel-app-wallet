@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Api\V1;
 
+use App\Enums\StatusUser;
+use App\Enums\TypeUser;
 use App\Http\Requests\Api\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Class UserRequest
@@ -27,19 +30,21 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return match ($this->method()) {
             'POST' => [
                 'name' => 'required',
                 'email' => 'required|unique:users',
                 'cpf_cnpj' => 'required|unique:users',
-                'type' => 'required',
+                'type' => ['required', Rule::enum(TypeUser::class)],
                 'password' => 'required',
             ],
             'PUT', 'PATCH' => [
                 'name' => 'required',
-                'email' => 'required|unique:users,email,' . $this->email,
-                'cpf_cnpj' => 'required|unique:users,cpf_cnpj,' . $this->cpf_cnpj,
-                'type' => 'required',
+                'email' => 'required|unique:users,email,' . $this->email . ',email',
+                'cpf_cnpj' => 'required|unique:users,cpf_cnpj,' . $this->cpf_cnpj . ',cpf_cnpj',
+                'type' => ['required', Rule::enum(TypeUser::class)],
+                'status' => ['required', Rule::enum(StatusUser::class)],
                 'password' => 'required',
             ],
             'GET', 'DELETE' => []

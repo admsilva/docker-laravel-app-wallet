@@ -16,17 +16,11 @@ use Illuminate\Support\Collection;
 class TransactionRepository implements TransactionRepositoryInterface
 {
     /**
-     * @var Transaction
-     */
-    protected Transaction $model;
-
-    /**
      * TransactionRepository constructor.
-     * @param Transaction $transaction
+     * @param Transaction $model
      */
-    public function __construct(Transaction $transaction)
+    public function __construct(protected Transaction $model)
     {
-        $this->model = $transaction;
     }
 
     /**

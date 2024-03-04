@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\NotifyTransaction;
+use App\Enums\StatusTransaction;
+use App\Enums\TypeTransaction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +28,18 @@ class Transaction extends Model
         'type',
         'status',
         'notify',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $casts = [
+        'amount' => 'integer',
+        'description' => 'string',
+        'type' => TypeTransaction::class,
+        'status' => StatusTransaction::class,
+        'notify' => NotifyTransaction::class,
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**

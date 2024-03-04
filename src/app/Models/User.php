@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\StatusUser;
+use App\Enums\TypeUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticate;
@@ -27,6 +29,8 @@ class User extends Authenticate
         'type',
         'status',
         'password',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -45,7 +49,14 @@ class User extends Authenticate
      * @var array
      */
     protected $casts = [
+        'name' => 'string',
+        'email' => 'string',
+        'cpf_cnpj' => 'string',
+        'type' => TypeUser::class,
+        'status' => StatusUser::class,
         'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     /**

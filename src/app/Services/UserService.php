@@ -3,12 +3,14 @@
 
 namespace App\Services;
 
+use App\Enums\StatusUser;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use Exception;
+use Throwable;
 
 /**
  * Class UserService
@@ -17,26 +19,14 @@ use Exception;
 class UserService
 {
     /**
-     * @var UserRepositoryInterface
-     */
-    protected UserRepositoryInterface $userRepository;
-
-    /**
-     * @var WalletService
-     */
-    protected WalletService $walletService;
-
-    /**
      * UserService constructor.
      * @param UserRepositoryInterface $userRepository
      * @param WalletService $walletService
      */
     public function __construct(
-        UserRepositoryInterface $userRepository,
-        WalletService $walletService
+        protected UserRepositoryInterface $userRepository,
+        protected WalletService $walletService
     ) {
-        $this->userRepository = $userRepository;
-        $this->walletService = $walletService;
     }
 
     /**
@@ -73,31 +63,30 @@ class UserService
      * @param array $user
      * @return Model
      * @throws Exception
+     * @throws Throwable
      */
     public function makeUser(array $user): Model
     {
-        DB::beginTransaction();
-        $newUser = $this->userRepository->createUser($user);
+        try {
+            DB::beginTransaction();
 
-        if (!$newUser) {
+            $user['status'] = StatusUser::ACTIVE;
+
+            $newUser = $this->userRepository->createUser($user);
+
+            $dataWallet = [
+                'user_id' => $newUser->id,
+                'balance' => 0
+            ];
+
+            $this->walletService->makeWallet($dataWallet);
+
+            DB::commit();
+            return $newUser;
+        } catch (Throwable $throwable) {
             DB::rollBack();
-            throw new Exception('User not created', 409);
+            throw $throwable;
         }
-
-        $dataWallet = [
-            'user_id' => $newUser->id,
-            'balance' => 0
-        ];
-
-        $wallet = $this->walletService->makeWallet($dataWallet);
-
-        if (!$wallet) {
-            DB::rollBack();
-            throw new Exception('Wallet to user not created', 409);
-        }
-
-        DB::commit();
-        return $newUser;
     }
 
     /**
@@ -132,7 +121,7 @@ class UserService
         }
 
         DB::commit();
-        return $isUpdated;
+        return true;
     }
 
     /**

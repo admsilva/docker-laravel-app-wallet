@@ -19,15 +19,15 @@ class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        if ($this["deposits"] ||
-            $this["withdraws"] ||
-            $this["transfers"]
+        if ($this['deposits'] ||
+            $this['withdraws'] ||
+            $this['transfers']
         ) {
             $deposits = [];
             $withdraws = [];
             $transfers = [];
 
-            foreach ($this["deposits"] as $deposit) {
+            foreach ($this['deposits'] as $deposit) {
                 $deposits[] = [
                     'id' => $deposit->id,
                     'wallet_payer_id' => $deposit->wallet_payer_id,
@@ -39,7 +39,7 @@ class TransactionResource extends JsonResource
                 ];
             }
 
-            foreach ($this["withdraws"] as $withdraw) {
+            foreach ($this['withdraws'] as $withdraw) {
                 $withdraws[] = [
                     'id' => $withdraw->id,
                     'wallet_payer_id' => $withdraw->wallet_payer_id,
@@ -51,7 +51,7 @@ class TransactionResource extends JsonResource
                 ];
             }
 
-            foreach ($this["transfers"] as $transfer) {
+            foreach ($this['transfers'] as $transfer) {
                 $transfers[] = [
                     'id' => $transfer->id,
                     'wallet_payer_id' => $transfer->wallet_payer_id,

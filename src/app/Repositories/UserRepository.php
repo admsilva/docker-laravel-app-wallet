@@ -16,17 +16,11 @@ use Illuminate\Support\Collection;
 class UserRepository implements UserRepositoryInterface
 {
     /**
-     * @var User
-     */
-    protected User $model;
-
-    /**
      * TransactionRepository constructor.
-     * @param User $user
+     * @param User $model
      */
-    public function __construct(User $user)
+    public function __construct(protected User $model)
     {
-        $this->model = $user;
     }
 
     /**
