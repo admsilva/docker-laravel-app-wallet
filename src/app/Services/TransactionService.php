@@ -110,7 +110,7 @@ class TransactionService
             }
 
             if ($walletPayer->user->type === 'shopkeeper' &&
-                $transaction["type"] === 'transfer'
+                $transaction['type'] === 'transfer'
             ) {
                 DB::rollBack();
                 throw new Exception('Not allowed transfer for shopkeeper.', 405);
@@ -121,11 +121,11 @@ class TransactionService
                 throw new Exception('Not allowed wallet is close.', 405);
             }
 
-            $newBalancePayer = ($transaction["type"] === 'deposit') ?
+            $newBalancePayer = ($transaction['type'] === 'deposit') ?
                 ($walletPayer->balance + $transaction['amount']) :
                 ($walletPayer->balance - $transaction['amount']);
 
-            if (in_array($transaction["type"], ['withdraw', 'transfer'])) {
+            if (in_array($transaction['type'], ['withdraw', 'transfer'])) {
                 if ($newBalancePayer < 0) {
                     DB::rollBack();
                     throw new Exception('Insufficient funds.', 405);
@@ -145,7 +145,7 @@ class TransactionService
                 throw new Exception('Wallet Payer not updated', 405);
             }
 
-            if ($transaction["type"] === 'transfer') {
+            if ($transaction['type'] === 'transfer') {
                 $walletPayee = $this->walletRepository
                     ->getWalletById($transaction['wallet_payee_id']);
 
@@ -154,7 +154,7 @@ class TransactionService
                     throw new Exception('Wallet Payee not found.', 404);
                 }
 
-                $newBalancePayee = ($walletPayee->balance + $transaction["amount"]);
+                $newBalancePayee = ($walletPayee->balance + $transaction['amount']);
                 $walletPayee->balance = $newBalancePayee;
                 $walletPayeeData = Arr::except(
                     $walletPayee->toArray(),
@@ -176,9 +176,9 @@ class TransactionService
                 throw new Exception('Transaction not allowed!', 405);
             }
 
-            $isNotify = $this->notificationService->sendNotify();
+            $notifyTransaction = $this->notificationService->sendNotify();
 
-            $transaction['notify'] = strtolower($isNotify);
+            $transaction['notify'] = $notifyTransaction;
             $transaction['status'] = 'success';
 
             $transactionCreated = $this->transactionRepository

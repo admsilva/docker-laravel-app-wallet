@@ -25,19 +25,4 @@
  *      name="test",
  *      description="Laravel App Wallet"
  *  )
- *
- * @OA\Get(
- *    path="/api/test",
- *    tags={"test"},
- *    summary="Pagina test",
- *    @OA\Response(
- *      response=200,
- *      description="Autenticado."
- *    ),
- *    @OA\Response(
- *      response="500",
- *      description="error"
- *    ),
- *    security={{ "bearerAuth": {} }}
- *  )
  */

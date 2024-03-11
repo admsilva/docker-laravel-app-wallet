@@ -3,8 +3,10 @@
 
 namespace App\Services;
 
+use App\Enums\NotifyTransaction;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Arr;
 
 class NotificationService
 {
@@ -43,6 +45,12 @@ class NotificationService
 
         $contents = json_decode($response->getBody()->getContents(), true);
 
-        return $contents['message'];
+        $message = Arr::get($contents, 'message');
+
+        if ($message) {
+            return NotifyTransaction::SUCCESS->value;
+        }
+
+        return NotifyTransaction::FAILURE->value;
     }
 }

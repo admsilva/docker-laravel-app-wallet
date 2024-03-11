@@ -6,20 +6,89 @@
     },
     "servers": [
         {
-            "url": "http://localhost/api/v1",
+            "url": "http://localhost",
             "description": "API"
         }
     ],
     "paths": {
-        "/api/test": {
+        "/api/v1/users": {
             "get": {
                 "tags": [
-                    "test"
+                    "users"
                 ],
-                "summary": "Pagina test",
+                "summary": "List users",
                 "responses": {
                     "200": {
-                        "description": "Autenticado."
+                        "description": "List users"
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "List users",
+                "requestBody": {
+                    "description": "User inputs",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users/{id}": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "List user by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List user by id"
                     },
                     "500": {
                         "description": "error"
@@ -34,6 +103,111 @@
         }
     },
     "components": {
+        "schemas": {
+            "UserInput": {
+                "title": "User input date",
+                "description": "Schema for user input",
+                "properties": {
+                    "name": {
+                        "description": "Wallet of id",
+                        "type": "integer",
+                        "example": "Jose"
+                    },
+                    "email": {
+                        "description": "Email for user",
+                        "type": "integer",
+                        "example": "jose@gmail.com"
+                    },
+                    "cpf_cnpj": {
+                        "description": "CPF/CNPJ for user",
+                        "type": "string",
+                        "example": 100
+                    },
+                    "type": {
+                        "description": "Type user",
+                        "type": "string",
+                        "example": "shopkeeper"
+                    },
+                    "password": {
+                        "description": "Password",
+                        "type": "string",
+                        "example": "123456"
+                    }
+                },
+                "type": "object"
+            },
+            "WalletUserOutput": {
+                "title": "Wallet of user",
+                "description": "Schema for wallet of user",
+                "properties": {
+                    "wallet_id": {
+                        "description": "Wallet of id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "User id of wallet",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "balance": {
+                        "description": "Balance of wallet",
+                        "type": "string",
+                        "example": 100
+                    },
+                    "status": {
+                        "description": "Status of wallet",
+                        "type": "string",
+                        "example": "open"
+                    }
+                },
+                "type": "object"
+            },
+            "UserOutput": {
+                "title": "User input date",
+                "description": "Schema for input user",
+                "properties": {
+                    "id": {
+                        "description": "Identifier",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Name of user",
+                        "type": "integer",
+                        "example": "Jose"
+                    },
+                    "email": {
+                        "description": "Email of user",
+                        "type": "string",
+                        "example": "jose@gmail.com"
+                    },
+                    "cpf_cnpj": {
+                        "description": "CPF/CNPJ of user",
+                        "type": "string",
+                        "example": "1234567890"
+                    },
+                    "type": {
+                        "description": "Type of user",
+                        "type": "string",
+                        "example": "person"
+                    },
+                    "status": {
+                        "description": "Status of user",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "wallet": {
+                        "description": "Wallet of user",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WalletUserOutput"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",

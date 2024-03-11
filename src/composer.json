@@ -8,7 +8,7 @@
         "php": "^8.3",
         "darkaonline/l5-swagger": "^8.5",
         "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^10.46",
+        "laravel/framework": "^10.47",
         "laravel/tinker": "^2.9",
         "zircote/swagger-php": "^3.3"
     },

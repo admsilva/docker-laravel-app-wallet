@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\V1;
 
 use App\Enums\StatusTransaction;
+use App\Enums\TypeTransaction;
 use App\Http\Requests\Api\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -37,7 +38,7 @@ class TransactionRequest extends FormRequest
 
         $rules['wallet_payer_id'] = 'required';
         $rules['amount'] = 'required';
-        $rules['type'] = ['required', Rule::enum(StatusTransaction::class)];
+        $rules['type'] = ['required', Rule::enum(TypeTransaction::class)];
 
         return $rules;
     }
