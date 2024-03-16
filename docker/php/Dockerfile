@@ -18,6 +18,8 @@ RUN apk --update add --no-cache --no-progress \
       unzip && \
       rm -rf /var/lib/apt/lists/* && \
       docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd && \
+      pecl install pcov && \
+      docker-php-ext-enable pcov && \
       mkdir -p /var/www/html && \
       addgroup -g 1000 -S $GROUP && \
       adduser -u 1000 -D -S -G $USER -h /app -g $GROUP $USER && \
