@@ -1,26 +1,31 @@
 <?php
 
 /**
+ * @OA\Tag(
+ *       name="Users",
+ *       description="Users api`s"
+ * )
+ *
  * @OA\Schema(
  *        schema="UserInput",
  *        title="User input date",
  *        description="Schema for user input",
  *        @OA\Property(
  *            property="name",
- *            type="integer",
+ *            type="string",
  *            example="Jose",
  *            description="Wallet of id"
  *        ),
  *        @OA\Property(
  *            property="email",
- *            type="integer",
+ *            type="string",
  *            example="jose@gmail.com",
  *            description="Email for user"
  *        ),
  *        @OA\Property(
  *            property="cpf_cnpj",
  *            type="string",
- *            example=100,
+ *            example=12312312312,
  *            description="CPF/CNPJ for user"
  *        ),
  *        @OA\Property(
@@ -29,6 +34,12 @@
  *            example="shopkeeper",
  *            description="Type user"
  *        ),
+ *        @OA\Property(
+ *             property="status",
+ *             type="string",
+ *             example="active",
+ *             description="Status user"
+ *         ),
  *        @OA\Property(
  *            property="password",
  *            type="string",
@@ -55,7 +66,7 @@
  *       ),
  *       @OA\Property(
  *           property="balance",
- *           type="string",
+ *           type="integer",
  *           example=100,
  *           description="Balance of wallet"
  *       ),
@@ -79,7 +90,7 @@
  *      ),
  *      @OA\Property(
  *          property="name",
- *          type="integer",
+ *          type="string",
  *          example="Jose",
  *          description="Name of user"
  *      ),
@@ -92,7 +103,7 @@
  *      @OA\Property(
  *          property="cpf_cnpj",
  *          type="string",
- *          example="1234567890",
+ *          example="12312312312",
  *          description="CPF/CNPJ of user"
  *      ),
  *      @OA\Property(
@@ -117,7 +128,7 @@
  *
  * @OA\Get(
  *     path="/api/v1/users",
- *     tags={"users"},
+ *     tags={"Users"},
  *     summary="List users",
  *     @OA\Response(
  *       response=200,
@@ -132,7 +143,7 @@
  *
  * @OA\Get(
  *     path="/api/v1/users/{id}",
- *     tags={"users"},
+ *     tags={"Users"},
  *     summary="List user by id",
  *     @OA\Parameter(
  *       name="id",
@@ -154,18 +165,61 @@
  *
  * @OA\Post(
  *      path="/api/v1/users",
- *      tags={"users"},
- *      summary="List users",
+ *      tags={"Users"},
+ *      summary="Create user",
  *      @OA\RequestBody(
  *          required=true,
- *          description="User inputs",
+ *          description="User input",
  *          @OA\JsonContent(ref="#/components/schemas/UserInput")
  *      ),
  *      @OA\Response(
- * *         response=200,
- * *         description="User create",
- * *         @OA\JsonContent(ref="#/components/schemas/UserOutput")
- * *    ),
+ *           response=200,
+ *           description="User create",
+ *           @OA\JsonContent(ref="#/components/schemas/UserOutput")
+ *      ),
+ *      @OA\Response(
+ *        response="500",
+ *        description="error"
+ *      ),
+ *      security={{ "bearerAuth": {} }}
+ *    )
+ *
+ * @OA\Put(
+ *       path="/api/v1/users",
+ *       tags={"Users"},
+ *       summary="Update users",
+ *       @OA\RequestBody(
+ *           required=true,
+ *           description="User input",
+ *           @OA\JsonContent(ref="#/components/schemas/UserInput")
+ *       ),
+ *       @OA\Response(
+ *            response=200,
+ *            description="User create",
+ *            @OA\JsonContent(ref="#/components/schemas/UserOutput")
+ *       ),
+ *       @OA\Response(
+ *         response="500",
+ *         description="error"
+ *       ),
+ *       security={{ "bearerAuth": {} }}
+ *     )
+ *
+ * @OA\Delete(
+ *      path="/api/v1/users/{id}",
+ *      tags={"Users"},
+ *      summary="Delete user by id",
+ *      @OA\Parameter(
+ *        name="id",
+ *        in="path",
+ *        description="ID user",
+ *        required=true,
+ *        @OA\Schema(type="integer")
+ *      ),
+ *      @OA\Response(
+ *        response=204,
+ *        description="Not content"
+ *      ),
  *      @OA\Response(
  *        response="500",
  *        description="error"

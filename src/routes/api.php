@@ -16,16 +16,10 @@ use App\Http\Controllers\Api\V1\TransactionController;
 |
 */
 
-Route::resource('users', UserController::class)->except([
-    'create', 'edit'
-]);
+Route::resource('users', UserController::class)->except(['create', 'edit']);
 
-Route::resource('wallets', WalletController::class)->except([
-    'create', 'edit'
-]);
+Route::resource('wallets', WalletController::class)->except(['create', 'edit']);
 
-Route::resource('transactions', TransactionController::class)->only([
-    'show', 'store'
-]);
+Route::resource('transactions', TransactionController::class)->only(['show', 'store']);
 
 Route::get('transactions/byWallet/{id}', [TransactionController::class, 'showTransactionsByWalletId']);

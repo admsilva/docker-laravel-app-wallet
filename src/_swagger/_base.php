@@ -20,9 +20,4 @@
  *     scheme="bearer",
  *     securityScheme="bearerAuth",
  * )
- *
- * @OA\Tag(
- *      name="test",
- *      description="Laravel App Wallet"
- *  )
  */

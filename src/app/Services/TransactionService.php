@@ -51,15 +51,15 @@ class TransactionService
         $payer = $this->transactionRepository->getAllTransactionsByWalletPayerId($id);
 
         $deposits = $payer->filter(function ($object) {
-            return $object->type === 'deposit' ?? $object;
+            return $object->type->value === 'deposit' ?? $object;
         });
 
         $withdraws = $payer->filter(function ($object) {
-            return $object->type === 'withdraw' ?? $object;
+            return $object->type->value === 'withdraw' ?? $object;
         });
 
         $transfers = $payer->filter(function ($object) {
-            return $object->type === 'transfer' ?? $object;
+            return $object->type->value === 'transfer' ?? $object;
         });
 
         return [
