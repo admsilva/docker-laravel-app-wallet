@@ -37,7 +37,7 @@ class NotificationService
      */
     public function sendNotify(): string
     {
-        $client =  new Client(['base_uri' => $this->baseUrlNotification, 'verify' => false]);
+        $client =  new Client(['base_uri' => $this->baseUrlNotification, 'verify' => env('SSL_VERIFY', false)]);
 
         $response = $client->request('POST', $this->uriNotification);
 

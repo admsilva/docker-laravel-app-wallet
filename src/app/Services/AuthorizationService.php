@@ -39,7 +39,7 @@ class AuthorizationService
      */
     public function checkAuthorization(): string
     {
-        $client =  new Client(['base_uri' => $this->baseUrlAuthorization, 'verify' => false]);
+        $client =  new Client(['base_uri' => $this->baseUrlAuthorization, 'verify' => env('SSL_VERIFY', false)]);
 
         $response = $client->request('GET', $this->uriAuthorization);
 
