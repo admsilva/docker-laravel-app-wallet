@@ -23,10 +23,10 @@ class UserResource extends JsonResource
 
         if ($this->wallet) {
             $user_wallet = [
-                "wallet_id" => $this->wallet->id,
-                "user_id" => $this->wallet->user_id,
-                "balance" => $this->wallet->balance,
-                "status" => $this->wallet->status,
+                'wallet_id' => $this->wallet->id,
+                'user_id' => $this->wallet->user_id,
+                'balance' => $this->wallet->balance,
+                'status' => $this->wallet->status,
             ];
         }
 

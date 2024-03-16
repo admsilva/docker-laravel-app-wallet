@@ -17,17 +17,11 @@ use Illuminate\Support\Collection;
 class WalletRepository implements WalletRepositoryInterface
 {
     /**
-     * @var Wallet
-     */
-    protected Wallet $model;
-
-    /**
      * TransactionRepository constructor.
-     * @param Wallet $wallet
+     * @param Wallet $model
      */
-    public function __construct(Wallet $wallet)
+    public function __construct(protected Wallet $model)
     {
-        $this->model = $wallet;
     }
 
     /**

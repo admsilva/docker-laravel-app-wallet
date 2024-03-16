@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Throwable;
 
 /**
  * Class WalletService
@@ -17,17 +18,11 @@ use Exception;
 class WalletService
 {
     /**
-     * @var WalletRepositoryInterface
-     */
-    protected WalletRepositoryInterface $walletRepository;
-
-    /**
      * WalletService constructor.
      * @param WalletRepositoryInterface $walletRepository
      */
-    public function __construct(WalletRepositoryInterface $walletRepository)
+    public function __construct(protected WalletRepositoryInterface $walletRepository)
     {
-        $this->walletRepository = $walletRepository;
     }
 
     /**
@@ -82,19 +77,19 @@ class WalletService
      * @param array $wallet
      * @return Model
      * @throws Exception
+     * @throws Throwable
      */
     public function makeWallet(array $wallet): Model
     {
-        DB::beginTransaction();
-        $newWallet = $this->walletRepository->createWallet($wallet);
-
-        if (!$newWallet) {
+        try {
+            DB::beginTransaction();
+            $newWallet = $this->walletRepository->createWallet($wallet);
+            DB::commit();
+            return $newWallet;
+        } catch (Throwable $throwable) {
             DB::rollBack();
-            throw new Exception('Wallet not created', 409);
+            throw $throwable;
         }
-
-        DB::commit();
-        return $newWallet;
     }
 
     /**

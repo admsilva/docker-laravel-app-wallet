@@ -10,6 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Exception\GuzzleException;
 use Exception;
+use Throwable;
 
 /**
  * Class TransactionService
@@ -18,26 +19,6 @@ use Exception;
 class TransactionService
 {
     /**
-     * @var TransactionRepositoryInterface
-     */
-    protected TransactionRepositoryInterface $transactionRepository;
-
-    /**
-     * @var WalletRepositoryInterface
-     */
-    protected WalletRepositoryInterface $walletRepository;
-
-    /**
-     * @var AuthorizationService
-     */
-    protected AuthorizationService $authorizationService;
-
-    /**
-     * @var NotificationService
-     */
-    protected NotificationService $notificationService;
-
-    /**
      * TransactionService constructor.
      * @param TransactionRepositoryInterface $transactionRepository
      * @param WalletRepositoryInterface $walletRepository
@@ -45,15 +26,11 @@ class TransactionService
      * @param NotificationService $notificationService
      */
     public function __construct(
-        TransactionRepositoryInterface $transactionRepository,
-        WalletRepositoryInterface $walletRepository,
-        AuthorizationService $authorizationService,
-        NotificationService $notificationService
+        protected TransactionRepositoryInterface $transactionRepository,
+        protected WalletRepositoryInterface $walletRepository,
+        protected AuthorizationService $authorizationService,
+        protected NotificationService $notificationService
     ) {
-        $this->transactionRepository = $transactionRepository;
-        $this->walletRepository = $walletRepository;
-        $this->authorizationService = $authorizationService;
-        $this->notificationService = $notificationService;
     }
 
     /**
@@ -74,15 +51,15 @@ class TransactionService
         $payer = $this->transactionRepository->getAllTransactionsByWalletPayerId($id);
 
         $deposits = $payer->filter(function ($object) {
-            return $object->type === 'deposit' ?? $object;
+            return $object->type->value === 'deposit' ?? $object;
         });
 
         $withdraws = $payer->filter(function ($object) {
-            return $object->type === 'withdraw' ?? $object;
+            return $object->type->value === 'withdraw' ?? $object;
         });
 
         $transfers = $payer->filter(function ($object) {
-            return $object->type === 'transfer' ?? $object;
+            return $object->type->value === 'transfer' ?? $object;
         });
 
         return [
@@ -117,100 +94,101 @@ class TransactionService
      * @return Model
      * @throws Exception
      * @throws GuzzleException
+     * @throws Throwable
      */
     public function makeTransaction(array $transaction): Model
     {
-        DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-        $walletPayer = $this->walletRepository
-            ->getWalletById($transaction['wallet_payer_id']);
+            $walletPayer = $this->walletRepository
+                ->getWalletById($transaction['wallet_payer_id']);
 
-        if ($walletPayer->user->status === 'deactivate') {
-            DB::rollBack();
-            throw new Exception('Not allowed user is deactivate.', 405);
-        }
-
-        if ($walletPayer->user->type === 'shopkeeper' &&
-            $transaction["type"] === 'transfer'
-        ) {
-            DB::rollBack();
-            throw new Exception('Not allowed transfer for shopkeeper.', 405);
-        }
-
-        if ($walletPayer->status === 'close') {
-            DB::rollBack();
-            throw new Exception('Not allowed wallet is close.', 405);
-        }
-
-        $newBalancePayer = ($transaction["type"] === 'deposit') ?
-            ($walletPayer->balance + $transaction['amount']) :
-            ($walletPayer->balance - $transaction['amount']);
-
-        if (in_array($transaction["type"], ['withdraw', 'transfer'])) {
-            if ($newBalancePayer < 0) {
+            if ($walletPayer->user->status === 'deactivate') {
                 DB::rollBack();
-                throw new Exception('Insufficient funds.', 405);
-            }
-        }
-
-        $walletPayer->balance = $newBalancePayer;
-        $walletPayerData = Arr::except(
-            $walletPayer->toArray(),
-            ['id', 'created_at', 'updated_at']
-        );
-        $updatedWalletPayer = $this->walletRepository
-            ->updateWallet($walletPayer, $walletPayerData);
-
-        if (!$updatedWalletPayer) {
-            DB::rollBack();
-            throw new Exception('Wallet Payer not updated', 405);
-        }
-
-        if ($transaction["type"] === 'transfer') {
-            $walletPayee = $this->walletRepository
-                ->getWalletById($transaction['wallet_payee_id']);
-
-            if (!$walletPayee) {
-                DB::rollBack();
-                throw new Exception('Wallet Payee not found.', 404);
+                throw new Exception('Not allowed user is deactivate.', 405);
             }
 
-            $newBalancePayee = ($walletPayee->balance + $transaction["amount"]);
-            $walletPayee->balance = $newBalancePayee;
-            $walletPayeeData = Arr::except(
-                $walletPayee->toArray(),
+            if ($walletPayer->user->type === 'shopkeeper' &&
+                $transaction['type'] === 'transfer'
+            ) {
+                DB::rollBack();
+                throw new Exception('Not allowed transfer for shopkeeper.', 405);
+            }
+
+            if ($walletPayer->status === 'close') {
+                DB::rollBack();
+                throw new Exception('Not allowed wallet is close.', 405);
+            }
+
+            $newBalancePayer = ($transaction['type'] === 'deposit') ?
+                ($walletPayer->balance + $transaction['amount']) :
+                ($walletPayer->balance - $transaction['amount']);
+
+            if (in_array($transaction['type'], ['withdraw', 'transfer'])) {
+                if ($newBalancePayer < 0) {
+                    DB::rollBack();
+                    throw new Exception('Insufficient funds.', 405);
+                }
+            }
+
+            $walletPayer->balance = $newBalancePayer;
+            $walletPayerData = Arr::except(
+                $walletPayer->toArray(),
                 ['id', 'created_at', 'updated_at']
             );
-            $updatedWalletPayee = $this->walletRepository
-                ->updateWallet($walletPayee, $walletPayeeData);
+            $updatedWalletPayer = $this->walletRepository
+                ->updateWallet($walletPayer, $walletPayerData);
 
-            if (!$updatedWalletPayee) {
+            if (!$updatedWalletPayer) {
                 DB::rollBack();
-                throw new Exception('Wallet Payee not updated', 405);
+                throw new Exception('Wallet Payer not updated', 405);
             }
-        }
 
-        $isAuthorization = $this->authorizationService->checkAuthorization();
+            if ($transaction['type'] === 'transfer') {
+                $walletPayee = $this->walletRepository
+                    ->getWalletById($transaction['wallet_payee_id']);
 
-        if ($isAuthorization !== 'Autorizado') {
+                if (!$walletPayee) {
+                    DB::rollBack();
+                    throw new Exception('Wallet Payee not found.', 404);
+                }
+
+                $newBalancePayee = ($walletPayee->balance + $transaction['amount']);
+                $walletPayee->balance = $newBalancePayee;
+                $walletPayeeData = Arr::except(
+                    $walletPayee->toArray(),
+                    ['id', 'created_at', 'updated_at']
+                );
+                $updatedWalletPayee = $this->walletRepository
+                    ->updateWallet($walletPayee, $walletPayeeData);
+
+                if (!$updatedWalletPayee) {
+                    DB::rollBack();
+                    throw new Exception('Wallet Payee not updated', 405);
+                }
+            }
+
+            $isAuthorization = $this->authorizationService->checkAuthorization();
+
+            if ($isAuthorization !== 'Autorizado') {
+                DB::rollBack();
+                throw new Exception('Transaction not allowed!', 405);
+            }
+
+            $notifyTransaction = $this->notificationService->sendNotify();
+
+            $transaction['notify'] = $notifyTransaction;
+            $transaction['status'] = 'success';
+
+            $transactionCreated = $this->transactionRepository
+                ->createTransaction($transaction);
+
+            DB::commit();
+            return $transactionCreated;
+        } catch (Throwable $throwable) {
             DB::rollBack();
-            throw new Exception('Transaction not allowed!', 405);
+            throw $throwable;
         }
-
-        $isNotify = $this->notificationService->sendNotify();
-
-        $transaction['notify'] = strtolower($isNotify);
-        $transaction['status'] = 'success';
-
-        $transactionCreated = $this->transactionRepository
-            ->createTransaction($transaction);
-
-        if (!$transactionCreated) {
-            DB::rollBack();
-            throw new Exception('Transaction not created.', 405);
-        }
-
-        DB::commit();
-        return $transactionCreated;
     }
 }

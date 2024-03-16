@@ -1,0 +1,737 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Laravel",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1",
+            "description": "API"
+        }
+    ],
+    "paths": {
+        "/api/v1/transactions/{id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "List transaction by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID transaction",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransactionOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/transactions/byWallet/{id}": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "List transaction by wallet id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID wallet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transaction by id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WalletTransactionsOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/transactions": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Create transaction",
+                "requestBody": {
+                    "description": "Transaction input",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Transaction output",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TransactionOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List users",
+                "responses": {
+                    "200": {
+                        "description": "List users"
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update users",
+                "requestBody": {
+                    "description": "User input",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create user",
+                "requestBody": {
+                    "description": "User input",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List user by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List user by id"
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete user by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Not content"
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wallets": {
+            "get": {
+                "tags": [
+                    "Wallets"
+                ],
+                "summary": "List wallets",
+                "responses": {
+                    "200": {
+                        "description": "List wallets"
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Wallets"
+                ],
+                "summary": "Update wallet",
+                "requestBody": {
+                    "description": "Wallet input",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WalletInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Wallet create",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WalletOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Wallets"
+                ],
+                "summary": "Create wallet",
+                "requestBody": {
+                    "description": "Wallet input",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/WalletInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User wallet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WalletOutput"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/wallets/{id}": {
+            "get": {
+                "tags": [
+                    "Wallets"
+                ],
+                "summary": "List wallet by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID wallet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List wallet by id"
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Wallets"
+                ],
+                "summary": "Delete wallet by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID wallet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Not content"
+                    },
+                    "500": {
+                        "description": "error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "TransactionInput": {
+                "title": "Transaction input date",
+                "description": "Schema for transaction input",
+                "properties": {
+                    "wallet_payer_id": {
+                        "description": "Payer user id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "description": {
+                        "description": "Description of transaction",
+                        "type": "string",
+                        "example": "Deposit bill"
+                    },
+                    "amount": {
+                        "description": "Amount of transaction",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "type": {
+                        "description": "Balance of wallet",
+                        "type": "string",
+                        "example": "deposit"
+                    },
+                    "wallet_payee_id": {
+                        "description": "Payee user id",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "TransactionOutput": {
+                "title": "Transaction output date",
+                "description": "Schema for output transaction",
+                "properties": {
+                    "id": {
+                        "description": "Identifier",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "wallet_payer_id": {
+                        "description": "Payer user id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "description": {
+                        "description": "Description of transaction",
+                        "type": "string",
+                        "example": "Deposit bill"
+                    },
+                    "amount": {
+                        "description": "Amount of transaction",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "type": {
+                        "description": "Balance of wallet",
+                        "type": "string",
+                        "example": "deposit"
+                    },
+                    "wallet_payee_id": {
+                        "description": "Payee user id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "status": {
+                        "description": "Status transaction",
+                        "type": "string",
+                        "example": "success"
+                    },
+                    "notify": {
+                        "description": "Notify transaction",
+                        "type": "string",
+                        "example": "success"
+                    }
+                },
+                "type": "object"
+            },
+            "WalletTransactionsOutput": {
+                "title": "Wallet transactions output date",
+                "description": "Schema for output wallet transactions",
+                "properties": {
+                    "deposits": {
+                        "description": "Wallet of user deposits",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransactionOutput"
+                        }
+                    },
+                    "withdraws": {
+                        "description": "Wallet of user withdraws",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransactionOutput"
+                        }
+                    },
+                    "transfers": {
+                        "description": "Wallet of user transfers",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransactionOutput"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UserInput": {
+                "title": "User input date",
+                "description": "Schema for user input",
+                "properties": {
+                    "name": {
+                        "description": "Wallet of id",
+                        "type": "string",
+                        "example": "Jose"
+                    },
+                    "email": {
+                        "description": "Email for user",
+                        "type": "string",
+                        "example": "jose@gmail.com"
+                    },
+                    "cpf_cnpj": {
+                        "description": "CPF/CNPJ for user",
+                        "type": "string",
+                        "example": 12312312312
+                    },
+                    "type": {
+                        "description": "Type user",
+                        "type": "string",
+                        "example": "shopkeeper"
+                    },
+                    "status": {
+                        "description": "Status user",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "password": {
+                        "description": "Password",
+                        "type": "string",
+                        "example": "123456"
+                    }
+                },
+                "type": "object"
+            },
+            "WalletUserOutput": {
+                "title": "Wallet of user",
+                "description": "Schema for wallet of user",
+                "properties": {
+                    "wallet_id": {
+                        "description": "Wallet of id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "User id of wallet",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "balance": {
+                        "description": "Balance of wallet",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "status": {
+                        "description": "Status of wallet",
+                        "type": "string",
+                        "example": "open"
+                    }
+                },
+                "type": "object"
+            },
+            "UserOutput": {
+                "title": "User input date",
+                "description": "Schema for input user",
+                "properties": {
+                    "id": {
+                        "description": "Identifier",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Name of user",
+                        "type": "string",
+                        "example": "Jose"
+                    },
+                    "email": {
+                        "description": "Email of user",
+                        "type": "string",
+                        "example": "jose@gmail.com"
+                    },
+                    "cpf_cnpj": {
+                        "description": "CPF/CNPJ of user",
+                        "type": "string",
+                        "example": "12312312312"
+                    },
+                    "type": {
+                        "description": "Type of user",
+                        "type": "string",
+                        "example": "person"
+                    },
+                    "status": {
+                        "description": "Status of user",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "wallet": {
+                        "description": "Wallet of user",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WalletUserOutput"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "WalletInput": {
+                "title": "Wallet input date",
+                "description": "Schema for wallet input",
+                "properties": {
+                    "user_id": {
+                        "description": "User id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "balance": {
+                        "description": "Balance of wallet",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "status": {
+                        "description": "Status of wallet",
+                        "type": "string",
+                        "example": "open"
+                    }
+                },
+                "type": "object"
+            },
+            "WalletOutput": {
+                "title": "Wallet input date",
+                "description": "Schema for input wallet",
+                "properties": {
+                    "id": {
+                        "description": "Identifier",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "User id",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "balance": {
+                        "description": "Balance of wallet",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "status": {
+                        "description": "Status of wallet",
+                        "type": "string",
+                        "example": "open"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Logar com token",
+                "name": "token",
+                "in": "header",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Transactions",
+            "description": "Transactions api`s"
+        },
+        {
+            "name": "Users",
+            "description": "Users api`s"
+        },
+        {
+            "name": "Wallets",
+            "description": "Wallets api`s"
+        }
+    ]
+}
