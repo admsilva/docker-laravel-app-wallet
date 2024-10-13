@@ -3,7 +3,7 @@ FROM php:8.3-fpm-alpine
 ARG USER
 ARG GROUP
 
-ENV COMPOSER_VERSION 2.7.6
+ENV COMPOSER_VERSION 2.8.1
 
 RUN apk --update add --no-cache --no-progress \
       ${PHPIZE_DEPS} \
