@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Api\V1;
 
-use App\Enums\StatusTransaction;
 use App\Enums\TypeTransaction;
 use App\Http\Requests\Api\FormRequest;
 use Illuminate\Validation\Rule;
@@ -32,12 +31,12 @@ class TransactionRequest extends FormRequest
     {
         $rules = $this->rules;
 
-        $rules['wallet_payer_id'] = 'required';
-        $rules['amount'] = 'required';
+        $rules['wallet_payer_id'] = 'required|exists:wallets,id';
+        $rules['amount'] = 'required|numeric|gt:0';
         $rules['type'] = ['required', Rule::enum(TypeTransaction::class)];
 
         if ($this->type === 'transfer') {
-            $rules['wallet_payee_id'] = 'required';
+            $rules['wallet_payee_id'] = 'required|exists:wallets,id';
         }
 
         return $rules;

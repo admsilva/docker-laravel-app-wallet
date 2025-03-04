@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Wallet API',
+                'title' => 'L5 Swagger UI',
             ],
 
             'routes' => [
@@ -19,6 +19,11 @@ return [
                  * Edit to include full URL in ui for assets
                  */
                 'use_absolute_path' => env('L5_SWAGGER_USE_ABSOLUTE_PATH', true),
+
+                /*
+                * Edit to set path where swagger ui assets should be stored
+                */
+                'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
 
                 /*
                  * File name of the generated json documentation file
@@ -87,11 +92,6 @@ return [
              * Edit to set the api's base path
              */
             'base' => env('L5_SWAGGER_BASE_PATH', null),
-
-            /*
-             * Edit to set path where swagger ui assets should be stored
-             */
-            'swagger_ui_assets_path' => env('L5_SWAGGER_UI_ASSETS_PATH', 'vendor/swagger-api/swagger-ui/dist/'),
 
             /*
              * Absolute path to directories that should be excluded from scanning

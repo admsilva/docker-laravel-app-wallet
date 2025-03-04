@@ -25,7 +25,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -63,7 +63,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -311,7 +311,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -347,7 +347,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -478,7 +478,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -620,7 +620,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -656,7 +656,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],
@@ -742,7 +742,7 @@
                         "in": "path",
                         "required": true,
                         "schema": {
-                            "type": "int"
+                            "type": "integer"
                         }
                     }
                 ],

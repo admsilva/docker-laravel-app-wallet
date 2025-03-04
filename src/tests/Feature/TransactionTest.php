@@ -2,7 +2,8 @@
 
 namespace Tests\Feature;
 
-
+use App\Models\Transaction;
+use App\Models\Wallet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,7 +20,9 @@ class TransactionTest extends TestCase
     {
         $this->seed();
 
-        $response = $this->get('/api/v1/transactions/byWallet/1');
+        $wallet = Wallet::first();
+
+        $response = $this->get(sprintf('/api/v1/transactions/byWallet/%s', $wallet->id));
 
         $response->assertStatus(200);
     }
@@ -33,7 +36,9 @@ class TransactionTest extends TestCase
     {
         $this->seed();
 
-        $response = $this->get('/api/v1/transactions/1');
+        $transaction = Transaction::first();
+
+        $response = $this->get(sprintf('/api/v1/transactions/%s', $transaction->id));
 
         $response->assertStatus(200);
     }

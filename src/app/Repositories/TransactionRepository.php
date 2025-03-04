@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Models\Transaction;
 use App\Repositories\Contracts\TransactionRepositoryInterface;

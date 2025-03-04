@@ -1,10 +1,10 @@
 <?php
 
-
 namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Arr;
 
 /**
  * Class AuthorizationService
@@ -45,6 +45,6 @@ class AuthorizationService
 
         $contents = json_decode($response->getBody()->getContents(), true);
 
-        return $contents['message'];
+        return Arr::get($contents, 'message', '');
     }
 }

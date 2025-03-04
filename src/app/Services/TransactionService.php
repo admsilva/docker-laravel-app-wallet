@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Repositories\Contracts\TransactionRepositoryInterface;
@@ -101,22 +100,25 @@ class TransactionService
         try {
             DB::beginTransaction();
 
-            $walletPayer = $this->walletRepository
-                ->getWalletById($transaction['wallet_payer_id']);
+            $walletPayer = $this->walletRepository->getWalletById($transaction['wallet_payer_id']);
 
-            if ($walletPayer->user->status === 'deactivate') {
+            if (is_null($walletPayer)) {
+                throw new Exception('Not found wallet', 404);
+            }
+
+            if ($walletPayer->user->status->value === 'deactivate') {
                 DB::rollBack();
                 throw new Exception('Not allowed user is deactivate.', 405);
             }
 
-            if ($walletPayer->user->type === 'shopkeeper' &&
+            if ($walletPayer->user->type->value === 'shopkeeper' &&
                 $transaction['type'] === 'transfer'
             ) {
                 DB::rollBack();
                 throw new Exception('Not allowed transfer for shopkeeper.', 405);
             }
 
-            if ($walletPayer->status === 'close') {
+            if ($walletPayer->status->value === 'close') {
                 DB::rollBack();
                 throw new Exception('Not allowed wallet is close.', 405);
             }

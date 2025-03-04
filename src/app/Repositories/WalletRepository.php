@@ -1,14 +1,11 @@
 <?php
 
-
 namespace App\Repositories;
-
 
 use App\Models\Wallet;
 use App\Repositories\Contracts\WalletRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-
 
 /**
  * Class WalletRepository

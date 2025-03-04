@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -32,7 +33,9 @@ class UserTest extends TestCase
     {
         $this->seed();
 
-        $response = $this->get('/api/v1/users/1');
+       $user = User::first();
+
+        $response = $this->get(sprintf('/api/v1/users/%s', $user->id));
 
         $response->assertStatus(200);
     }
