@@ -10,7 +10,7 @@ use App\Services\WalletService;
 use App\Http\Resources\Api\V1\WalletResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use OpenApi\Attributes as OA;
 
@@ -148,7 +148,7 @@ class WalletController extends Controller
         try {
             $wallet = $this->walletService->makeWallet($request->all());
 
-            return (new WalletResource($wallet))->response()->setStatusCode(201);
+            return new WalletResource($wallet)->response()->setStatusCode(201);
         }
         catch (Throwable $exception) {
             return response()->json([

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\TransactionRequest;
 use App\Http\Resources\Api\V1\TransactionResource;
 use App\Services\TransactionService;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Attributes as OA;
@@ -138,7 +138,7 @@ class TransactionController extends Controller
         try {
             $transaction = $this->transactionService->makeTransaction($request->all());
 
-            return (new TransactionResource($transaction))->response()->setStatusCode(201);
+            return new TransactionResource($transaction)->response()->setStatusCode(201);
         }
         catch (Throwable $exception) {
             return response()->json([

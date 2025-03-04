@@ -10,7 +10,7 @@ use App\Http\Resources\Api\V1\UserResource;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 use OpenApi\Attributes as OA;
 
@@ -166,7 +166,7 @@ class UserController extends Controller
         try {
             $user = $this->userService->makeUser($request->all());
 
-            return (new UserResource($user))->response()->setStatusCode(201);
+            return new UserResource($user)->response()->setStatusCode(201);
         }
         catch (Throwable $exception) {
             return response()->json([

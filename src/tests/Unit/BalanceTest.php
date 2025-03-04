@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests\Unit;
 
 use App\Models\Wallet;
@@ -45,7 +44,7 @@ class BalanceTest extends TestCase
         $newDataTransaction = [
             'wallet_payer_id' => $walletPayerId,
             'wallet_payee_id' => $walletPayeeId,
-            'amount' => 1000,
+            'amount' => 10,
             'description' => 'Transfer',
             'type' => 'transfer'
         ];

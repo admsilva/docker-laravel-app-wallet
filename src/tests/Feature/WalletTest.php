@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-
+use App\Models\Wallet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -33,7 +33,9 @@ class WalletTest extends TestCase
     {
         $this->seed();
 
-        $response = $this->get('/api/v1/wallets/1');
+        $wallet = Wallet::first();
+
+        $response = $this->get(sprintf('/api/v1/wallets/%s', $wallet->id));
 
         $response->assertStatus(200);
     }
