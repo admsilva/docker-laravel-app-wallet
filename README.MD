@@ -14,7 +14,7 @@
 ```
 git clone https://github.com/admsilva/docker-laravel-app-wallet.git
 cd docker-laravel-app-wallet
-cp .env-example .env
+cp .env.example .env
 cp ./src/.env.example ./src/.env
 docker-compose up -d --build
 ```
