@@ -1,9 +1,9 @@
-FROM php:8.4-fpm-alpine
+FROM php:8.5-fpm-alpine
 
 ARG USER
 ARG GROUP
 
-ENV COMPOSER_VERSION 2.8.9
+ENV COMPOSER_VERSION 2.9.2
 
 RUN apk --update add --no-cache --no-progress \
       ${PHPIZE_DEPS} \
